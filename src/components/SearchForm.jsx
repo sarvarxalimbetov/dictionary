@@ -16,7 +16,6 @@ const SearchForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
   const { data, error, loading } = useSelector((state) => state.word);
   const [searchedWord, setSearchedWord] = React.useState("");
@@ -24,10 +23,13 @@ const SearchForm = () => {
 
   const onSubmit = async (input) => {
     dispatch(fetchDataStart());
+    const search_word = input.search.toLowerCase()
+
+    console.log(search_word);
 
     try {
       const response = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${input.search}`
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${search_word}`
       );
       if (response.status === 404) {
         setErrorWord(true);
@@ -38,11 +40,13 @@ const SearchForm = () => {
       const data = await response.json();
 
       dispatch(fetchDataSuccess(data));
-      setSearchedWord(input.search);
+      setSearchedWord(input.search.toLowerCase());
     } catch (error) {
       dispatch(fetchDataFailure(error.message));
     }
   };
+
+  console.log(data);
 
   return (
     <>
@@ -92,7 +96,7 @@ const SearchForm = () => {
         ""
       )}
 
-      {data.length > 0 && searchedWord && searchedWord === data[0].word && (
+      {data?.length > 0 && searchedWord && searchedWord === data[0].word && (
         <div className="result_wrapper">
           {data?.map((data) => (
             <Result data={data} key={Date.now()} />

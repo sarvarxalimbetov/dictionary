@@ -1,11 +1,10 @@
 import React from "react";
 import play from "../../public/images/icon-play.svg";
 import link from "../../public/images/icon-new-window.svg";
-// import "./Result.css";
 
 const Result = ({ data }) => {
   const audio = new Audio(data?.phonetics[1]?.audio);
-  console.log(data?.phonetics[1]?.audio);
+  console.log(data);
 
   return (
     <div className="result">
